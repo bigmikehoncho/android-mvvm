@@ -20,37 +20,44 @@ import android.databinding.Observable.OnPropertyChangedCallback;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action0;
-import rx.subscriptions.Subscriptions;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.disposables.Disposable;
 
 public class FieldUtils {
     @NonNull
     public static <T> Observable<T> toObservable(@NonNull final ObservableField<T> field) {
-        return Observable.create(new Observable.OnSubscribe<T>() {
+        return Observable.create(new ObservableOnSubscribe<T>() {
+
             @Override
-            public void call(final Subscriber<? super T> subscriber) {
-                subscriber.onNext(field.get());
+            public void subscribe(final ObservableEmitter<T> emitter) throws Exception {
+                emitter.onNext(field.get());
                 final OnPropertyChangedCallback callback = new OnPropertyChangedCallback() {
                     @Override
                     public void onPropertyChanged(android.databinding.Observable observable, int i) {
-                        subscriber.onNext(field.get());
+                        emitter.onNext(field.get());
                     }
                 };
                 field.addOnPropertyChangedCallback(callback);
-                subscriber.add(Subscriptions.create(new Action0() {
+                emitter.setDisposable(new Disposable() {
                     @Override
-                    public void call() {
+                    public void dispose() {
                         field.removeOnPropertyChangedCallback(callback);
                     }
-                }));
+
+                    @Override
+                    public boolean isDisposed() {
+                        return false;
+                    }
+                });
             }
         });
     }
 
     /**
      * A convenient wrapper for {@code ReadOnlyField#create(Observable)}
+     *
      * @return DataBinding field created from the specified Observable
      */
     @NonNull

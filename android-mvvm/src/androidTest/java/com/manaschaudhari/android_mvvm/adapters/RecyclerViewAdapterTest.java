@@ -36,8 +36,8 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 import static org.junit.Assert.*;
 
@@ -60,7 +60,7 @@ public class RecyclerViewAdapterTest {
     public void setUp() throws Exception {
         List<ViewModel> vms = TestViewModel.dummyViewModels(INITIAL_COUNT);
 
-        viewModelsSource = BehaviorSubject.create(vms);
+        viewModelsSource = BehaviorSubject.createDefault(vms);
         testViewProvider = new TestViewProvider();
         testBinder = new TestViewModelBinder();
         subscriptionCounter = new SubscriptionCounter<>();

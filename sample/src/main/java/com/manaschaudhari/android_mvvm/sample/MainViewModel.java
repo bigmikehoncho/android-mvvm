@@ -20,7 +20,7 @@ import android.support.annotation.NonNull;
 
 import com.manaschaudhari.android_mvvm.ViewModel;
 
-import rx.functions.Action0;
+import io.reactivex.functions.Action;
 
 public class MainViewModel implements ViewModel {
     @NonNull
@@ -31,30 +31,30 @@ public class MainViewModel implements ViewModel {
         this.navigator = navigator;
     }
 
-    public final Action0 onAdapterClick = new Action0() {
+    public final Action onAdapterClick = new Action() {
         @Override
-        public void call() {
+        public void run() {
             navigator.navigateToAdapterDemo();
         }
     };
 
-    public final Action0 onFunctionalClick = new Action0() {
+    public final Action onFunctionalClick = new Action() {
         @Override
-        public void call() {
+        public void run() {
             navigator.navigateToFunctionalDemo();
         }
     };
 
-    public final Action0 onTwoWayBindingClick = new Action0() {
+    public final Action onTwoWayBindingClick = new Action() {
         @Override
-        public void call() {
+        public void run() {
             navigator.navigateToTwoWayBindingDemo();
         }
     };
 
-    public final Action0 onCalculatorExampleClick = new Action0() {
+    public final Action onCalculatorExampleClick = new Action() {
         @Override
-        public void call() {
+        public void run() {
             navigator.navigateToCalculatorDemo();
         }
     };

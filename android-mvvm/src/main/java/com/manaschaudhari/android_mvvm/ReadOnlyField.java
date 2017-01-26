@@ -22,13 +22,13 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 public class ReadOnlyField<T> extends ObservableField<T> {
     final Observable<T> source;
-    final HashMap<OnPropertyChangedCallback, Subscription> subscriptions = new HashMap<>();
+    final HashMap<OnPropertyChangedCallback, Disposable> disposables = new HashMap<>();
 
     public static <U> ReadOnlyField<U> create(@NonNull Observable<U> source) {
         return new ReadOnlyField<>(source);
@@ -37,15 +37,15 @@ public class ReadOnlyField<T> extends ObservableField<T> {
     protected ReadOnlyField(@NonNull Observable<T> source) {
         super();
         this.source = source
-                .doOnNext(new Action1<T>() {
+                .doOnNext(new Consumer<T>() {
                     @Override
-                    public void call(T t) {
+                    public void accept(T t) throws Exception {
                         ReadOnlyField.super.set(t);
                     }
                 })
-                .doOnError(new Action1<Throwable>() {
+                .doOnError(new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) throws Exception {
                         Log.e("ReadOnlyField", "onError in source observable", throwable);
                     }
                 })
@@ -64,15 +64,15 @@ public class ReadOnlyField<T> extends ObservableField<T> {
     @Override
     public synchronized void addOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
         super.addOnPropertyChangedCallback(callback);
-        subscriptions.put(callback, source.subscribe());
+        disposables.put(callback, source.subscribe());
     }
 
     @Override
     public synchronized void removeOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
         super.removeOnPropertyChangedCallback(callback);
-        Subscription subscription = subscriptions.remove(callback);
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        Disposable disposable = disposables.remove(callback);
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
     }
 }

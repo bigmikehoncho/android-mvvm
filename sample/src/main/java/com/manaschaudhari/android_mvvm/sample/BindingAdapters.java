@@ -33,8 +33,8 @@ import com.manaschaudhari.android_mvvm.utils.BindingUtils;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.functions.Action0;
+import io.reactivex.Observable;
+import io.reactivex.functions.Action;
 
 @SuppressWarnings("unused")
 public class BindingAdapters {
@@ -81,12 +81,16 @@ public class BindingAdapters {
     }
 
     @BindingConversion
-    public static View.OnClickListener toOnClickListener(final Action0 listener) {
+    public static View.OnClickListener toOnClickListener(final Action listener) {
         if (listener != null) {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.call();
+                    try {
+                        listener.run();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             };
         } else {
