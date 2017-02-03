@@ -38,4 +38,9 @@ public class TestViewModel implements ViewModel {
         }
         return vms;
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

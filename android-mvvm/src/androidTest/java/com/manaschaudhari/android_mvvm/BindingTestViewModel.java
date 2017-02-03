@@ -30,4 +30,9 @@ public class BindingTestViewModel implements ViewModel {
     public Observable<List<TestViewModel>> observableSubclassMixedList;
 
     public ViewProvider viewProvider;
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

@@ -58,4 +58,9 @@ public class ItemViewModel implements ViewModel {
 
     @Nullable
     public final Action onDetailsClicked;
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

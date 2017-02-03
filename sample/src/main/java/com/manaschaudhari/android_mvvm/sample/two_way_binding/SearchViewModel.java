@@ -66,4 +66,9 @@ public class SearchViewModel implements ViewModel {
             }
         };
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

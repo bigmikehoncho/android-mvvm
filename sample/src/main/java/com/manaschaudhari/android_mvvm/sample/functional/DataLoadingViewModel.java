@@ -62,4 +62,9 @@ public class DataLoadingViewModel implements ViewModel {
             }
         }));
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

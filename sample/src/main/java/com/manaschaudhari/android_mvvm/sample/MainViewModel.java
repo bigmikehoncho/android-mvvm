@@ -58,4 +58,9 @@ public class MainViewModel implements ViewModel {
             navigator.navigateToCalculatorDemo();
         }
     };
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

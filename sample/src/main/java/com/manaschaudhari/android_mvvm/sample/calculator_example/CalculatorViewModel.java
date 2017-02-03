@@ -58,4 +58,9 @@ public class CalculatorViewModel implements ViewModel {
                 });
         this.result = toField(result);
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

@@ -59,4 +59,9 @@ public class ItemListViewModel implements ViewModel {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }
