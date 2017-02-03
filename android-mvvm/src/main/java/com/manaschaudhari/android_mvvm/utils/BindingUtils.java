@@ -29,6 +29,7 @@ import android.support.v7.widget.RecyclerView;
 import com.manaschaudhari.android_mvvm.R;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.adapters.Connectable;
+import com.manaschaudhari.android_mvvm.adapters.ListViewPagerAdapter;
 import com.manaschaudhari.android_mvvm.adapters.RecyclerViewAdapter;
 import com.manaschaudhari.android_mvvm.adapters.ViewModelBinder;
 import com.manaschaudhari.android_mvvm.adapters.ViewPagerAdapter;
@@ -97,6 +98,16 @@ public class BindingUtils {
         if (items != null && viewProvider != null) {
             Preconditions.checkNotNull(defaultBinder, "Default Binder");
             adapter = new ViewPagerAdapter(items, viewProvider, defaultBinder);
+        }
+        bindAdapter(viewPager, adapter);
+    }
+
+    @BindingAdapter({"items", "view_provider"})
+    public static void bindAdapterWithDefaultBinder(@NonNull ViewPager viewPager, @Nullable List<ViewModel> items, @Nullable ViewProvider viewProvider) {
+        ListViewPagerAdapter adapter = null;
+        if (items != null && viewProvider != null) {
+            Preconditions.checkNotNull(defaultBinder, "Default Binder");
+            adapter = new ListViewPagerAdapter(items, viewProvider, defaultBinder);
         }
         bindAdapter(viewPager, adapter);
     }
