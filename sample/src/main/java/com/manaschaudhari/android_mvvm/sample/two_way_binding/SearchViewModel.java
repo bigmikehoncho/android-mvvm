@@ -20,7 +20,6 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
 import com.manaschaudhari.android_mvvm.FieldUtils;
-import com.manaschaudhari.android_mvvm.ReadOnlyField;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.Item;
 import com.manaschaudhari.android_mvvm.sample.ItemViewModel;
@@ -33,7 +32,6 @@ import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 public class SearchViewModel implements ViewModel {
