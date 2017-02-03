@@ -32,7 +32,7 @@ import com.manaschaudhari.android_mvvm.utils.Preconditions;
  * binder provided to the library
  */
 public abstract class MvvmActivity extends AppCompatActivity {
-    private ViewDataBinding binding;
+    protected ViewDataBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

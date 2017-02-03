@@ -21,7 +21,7 @@ import com.manaschaudhari.android_mvvm.utils.Preconditions;
  */
 public abstract class MvvmFragment extends Fragment {
 
-    private ViewDataBinding binding;
+    protected ViewDataBinding binding;
 
     @Nullable
     @Override

@@ -19,6 +19,7 @@ package com.manaschaudhari.android_mvvm.sample;
 import android.support.annotation.NonNull;
 
 import com.manaschaudhari.android_mvvm.ViewModel;
+import com.manaschaudhari.android_mvvm.sample.databinding.ActivityMainBinding;
 
 public class MainActivity extends BaseActivity {
 
