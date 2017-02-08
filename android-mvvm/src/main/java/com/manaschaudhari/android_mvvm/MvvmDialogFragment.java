@@ -16,7 +16,7 @@ import com.manaschaudhari.android_mvvm.utils.Preconditions;
  * Created by michael on 2/8/2017.
  */
 
-public abstract class MvvmDialog extends DialogFragment {
+public abstract class MvvmDialogFragment extends DialogFragment {
     protected ViewDataBinding binding;
 
     @Override
