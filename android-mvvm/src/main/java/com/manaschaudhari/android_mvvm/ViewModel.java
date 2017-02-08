@@ -16,7 +16,9 @@
 
 package com.manaschaudhari.android_mvvm;
 
-public interface ViewModel {
+public interface ViewModel<T extends INavigator> {
+
+    void setNavigator(T navigator);
 
     void onDestroy();
 }
