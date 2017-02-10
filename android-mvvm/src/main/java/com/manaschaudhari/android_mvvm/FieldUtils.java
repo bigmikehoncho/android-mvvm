@@ -23,34 +23,29 @@ import android.support.annotation.NonNull;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Action;
 
 public class FieldUtils {
     @NonNull
     public static <T> Observable<T> toObservable(@NonNull final ObservableField<T> field) {
         return Observable.create(new ObservableOnSubscribe<T>() {
-
             @Override
-            public void subscribe(final ObservableEmitter<T> emitter) throws Exception {
-                emitter.onNext(field.get());
+            public void subscribe(final ObservableEmitter<T> e) throws Exception {
+                e.onNext(field.get());
                 final OnPropertyChangedCallback callback = new OnPropertyChangedCallback() {
                     @Override
                     public void onPropertyChanged(android.databinding.Observable observable, int i) {
-                        emitter.onNext(field.get());
+                        e.onNext(field.get());
                     }
                 };
                 field.addOnPropertyChangedCallback(callback);
-                emitter.setDisposable(new Disposable() {
+                e.setDisposable(Disposables.fromAction(new Action() {
                     @Override
-                    public void dispose() {
+                    public void run() throws Exception {
                         field.removeOnPropertyChangedCallback(callback);
                     }
-
-                    @Override
-                    public boolean isDisposed() {
-                        return false;
-                    }
-                });
+                }));
             }
         });
     }
