@@ -19,6 +19,7 @@ package com.manaschaudhari.android_mvvm.sample.functional;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ReadOnlyField;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.utils.RxUtils;
@@ -30,7 +31,7 @@ import io.reactivex.functions.Function;
 
 import static com.manaschaudhari.android_mvvm.FieldUtils.toField;
 
-public class DataLoadingViewModel implements ViewModel {
+public class DataLoadingViewModel implements ViewModel<INavigator> {
 
     @NonNull
     public final ReadOnlyField<String> result;
@@ -64,7 +65,7 @@ public class DataLoadingViewModel implements ViewModel {
     }
 
     @Override
-    public void onDestroy() {
+    public void setNavigator(INavigator navigator) {
 
     }
 }

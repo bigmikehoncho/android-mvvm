@@ -18,11 +18,12 @@ package com.manaschaudhari.android_mvvm.sample;
 
 import android.support.annotation.NonNull;
 
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 
 import io.reactivex.functions.Action;
 
-public class MainViewModel implements ViewModel {
+public class MainViewModel implements ViewModel<INavigator> {
     @NonNull
     private final Navigator navigator;
 
@@ -60,7 +61,7 @@ public class MainViewModel implements ViewModel {
     };
 
     @Override
-    public void onDestroy() {
+    public void setNavigator(INavigator navigator) {
 
     }
 }

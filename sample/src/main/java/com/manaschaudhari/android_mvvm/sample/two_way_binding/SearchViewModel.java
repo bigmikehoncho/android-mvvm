@@ -20,6 +20,7 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
 import com.manaschaudhari.android_mvvm.FieldUtils;
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.Item;
 import com.manaschaudhari.android_mvvm.sample.ItemViewModel;
@@ -34,7 +35,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 
-public class SearchViewModel implements ViewModel {
+public class SearchViewModel implements ViewModel<INavigator> {
     public final ObservableField<String> searchQuery = new ObservableField<>("");
     public final Observable<List<ViewModel>> results;
     public final Action onRandomSearch;
@@ -66,7 +67,7 @@ public class SearchViewModel implements ViewModel {
     }
 
     @Override
-    public void onDestroy() {
+    public void setNavigator(INavigator navigator) {
 
     }
 }

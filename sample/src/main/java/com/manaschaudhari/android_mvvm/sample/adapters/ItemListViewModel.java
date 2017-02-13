@@ -18,6 +18,7 @@ package com.manaschaudhari.android_mvvm.sample.adapters;
 
 import android.support.annotation.NonNull;
 
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.Item;
 import com.manaschaudhari.android_mvvm.sample.ItemViewModel;
@@ -27,16 +28,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.subjects.BehaviorSubject;
 
-public class ItemListViewModel implements ViewModel {
-    public final Observable<List<ItemViewModel>> itemVms;
+public class ItemListViewModel implements ViewModel<INavigator> {
+    public final Observable<List<ViewModel>> itemVms;
 
     /**
      * Static non-terminating source will ensure that any non-closed subscription results in a memory leak
      */
     private static final Observable<List<Item>> itemsSource;
+
+    private BehaviorSubject<Boolean> test = BehaviorSubject.createDefault(false);
 
     static {
         List<Item> items = new ArrayList<>();
@@ -48,10 +52,15 @@ public class ItemListViewModel implements ViewModel {
     }
 
     public ItemListViewModel(@NonNull final MessageHelper messageHelper, @NonNull final Navigator navigator) {
-        this.itemVms = itemsSource.map(new Function<List<Item>, List<ItemViewModel>>() {
+        this.itemVms = Observable.combineLatest(itemsSource, test, new BiFunction<List<Item>, Boolean, List<Item>>() {
             @Override
-            public List<ItemViewModel> apply(List<Item> items) throws Exception {
-                List<ItemViewModel> vms = new ArrayList<>();
+            public List<Item> apply(List<Item> items, Boolean aBoolean) throws Exception {
+                return items;
+            }
+        }).map(new Function<List<Item>, List<ViewModel>>() {
+            @Override
+            public List<ViewModel> apply(List<Item> items) throws Exception {
+                List<ViewModel> vms = new ArrayList<>();
                 for (Item item : items) {
                     vms.add(new ItemViewModel(item, messageHelper, navigator));
                 }
@@ -61,7 +70,7 @@ public class ItemListViewModel implements ViewModel {
     }
 
     @Override
-    public void onDestroy() {
+    public void setNavigator(INavigator navigator) {
 
     }
 }

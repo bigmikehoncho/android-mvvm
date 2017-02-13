@@ -20,12 +20,13 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.adapters.MessageHelper;
 
 import io.reactivex.functions.Action;
 
-public class ItemViewModel implements ViewModel {
+public class ItemViewModel implements ViewModel<INavigator> {
     @NonNull
     public final String name;
 
@@ -60,7 +61,7 @@ public class ItemViewModel implements ViewModel {
     public final Action onDetailsClicked;
 
     @Override
-    public void onDestroy() {
+    public void setNavigator(INavigator navigator) {
 
     }
 }
