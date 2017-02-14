@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.subjects.BehaviorSubject;
 
@@ -40,8 +39,6 @@ public class ItemListViewModel implements ViewModel<INavigator> {
      */
     private static final Observable<List<Item>> itemsSource;
 
-    private BehaviorSubject<Boolean> test = BehaviorSubject.createDefault(false);
-
     static {
         List<Item> items = new ArrayList<>();
 
@@ -52,12 +49,7 @@ public class ItemListViewModel implements ViewModel<INavigator> {
     }
 
     public ItemListViewModel(@NonNull final MessageHelper messageHelper, @NonNull final Navigator navigator) {
-        this.itemVms = Observable.combineLatest(itemsSource, test, new BiFunction<List<Item>, Boolean, List<Item>>() {
-            @Override
-            public List<Item> apply(List<Item> items, Boolean aBoolean) throws Exception {
-                return items;
-            }
-        }).map(new Function<List<Item>, List<ViewModel>>() {
+        this.itemVms = itemsSource.map(new Function<List<Item>, List<ViewModel>>() {
             @Override
             public List<ViewModel> apply(List<Item> items) throws Exception {
                 List<ViewModel> vms = new ArrayList<>();
