@@ -84,4 +84,9 @@ public class FieldUtils {
     public static <T> ReadOnlyField<T> toField(@NonNull final Observable<T> observable) {
         return ReadOnlyField.create(observable);
     }
+
+    @NonNull
+    public static ReadOnlyBoolean toBooleanField(@NonNull final Observable<Boolean> observable) {
+        return ReadOnlyBoolean.create(observable);
+    }
 }
