@@ -17,6 +17,7 @@
 package com.manaschaudhari.android_mvvm;
 
 import android.databinding.Observable.OnPropertyChangedCallback;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
@@ -27,11 +28,35 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
 
 public class FieldUtils {
+
     @NonNull
     public static <T> Observable<T> toObservable(@NonNull final ObservableField<T> field) {
         return Observable.create(new ObservableOnSubscribe<T>() {
             @Override
             public void subscribe(final ObservableEmitter<T> e) throws Exception {
+                e.onNext(field.get());
+                final OnPropertyChangedCallback callback = new OnPropertyChangedCallback() {
+                    @Override
+                    public void onPropertyChanged(android.databinding.Observable observable, int i) {
+                        e.onNext(field.get());
+                    }
+                };
+                field.addOnPropertyChangedCallback(callback);
+                e.setDisposable(Disposables.fromAction(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        field.removeOnPropertyChangedCallback(callback);
+                    }
+                }));
+            }
+        });
+    }
+
+    @NonNull
+    public static Observable<Boolean> toObservable(@NonNull final ObservableBoolean field){
+        return Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Boolean> e) throws Exception {
                 e.onNext(field.get());
                 final OnPropertyChangedCallback callback = new OnPropertyChangedCallback() {
                     @Override
