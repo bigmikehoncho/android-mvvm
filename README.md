@@ -1,3 +1,5 @@
+This project is an RxJava2 version of [Android MVVM](https://github.com/manas-chaudhari/android-mvvm)
+
 # Android MVVM
 [![Build Status](https://travis-ci.org/manas-chaudhari/android-mvvm.svg?branch=master)](https://travis-ci.org/manas-chaudhari/android-mvvm) [ ![Download](https://api.bintray.com/packages/manas-chaudhari/maven/android-mvvm/images/download.svg) ](https://bintray.com/manas-chaudhari/maven/android-mvvm/_latestVersion)
 
