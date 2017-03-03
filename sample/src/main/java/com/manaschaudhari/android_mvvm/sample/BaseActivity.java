@@ -17,18 +17,45 @@
 package com.manaschaudhari.android_mvvm.sample;
 
 import android.content.Intent;
+import android.databinding.ViewDataBinding;
+import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.manaschaudhari.android_mvvm.MvvmActivity;
+import com.manaschaudhari.android_mvvm.MvvmBinder;
+import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.adapters.ItemListActivity;
 import com.manaschaudhari.android_mvvm.sample.adapters.MessageHelper;
 import com.manaschaudhari.android_mvvm.sample.calculator_example.CalculatorActivity;
 import com.manaschaudhari.android_mvvm.sample.functional.DataLoadingActivity;
 import com.manaschaudhari.android_mvvm.sample.two_way_binding.SearchActivity;
 
-public abstract class BaseActivity extends MvvmActivity {
-
+public abstract class BaseActivity<Binding extends ViewDataBinding> extends AppCompatActivity {
+    protected MvvmBinder<Binding> mvvmBinder;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        mvvmBinder = new MvvmBinder<>(getLayoutId(), createViewModel());
+        mvvmBinder.onCreate(this);
+    }
+    
+    @Override
+    protected void onDestroy() {
+        mvvmBinder.onDestroy();
+        
+        super.onDestroy();
+    }
+    
+    @NonNull
+    protected abstract ViewModel createViewModel();
+    
+    @LayoutRes
+    protected abstract int getLayoutId();
+    
     @NonNull
     protected Navigator getNavigator() {
         return new Navigator() {
@@ -36,34 +63,34 @@ public abstract class BaseActivity extends MvvmActivity {
             public void openDetailsPage(Item item) {
                 navigate(ItemDetailsActivity.class);
             }
-
+            
             @Override
             public void navigateToFunctionalDemo() {
                 navigate(DataLoadingActivity.class);
             }
-
+            
             @Override
             public void navigateToAdapterDemo() {
                 navigate(ItemListActivity.class);
             }
-
+            
             @Override
             public void navigateToTwoWayBindingDemo() {
                 navigate(SearchActivity.class);
             }
-
+            
             @Override
             public void navigateToCalculatorDemo() {
                 navigate(CalculatorActivity.class);
             }
-
+            
             private void navigate(Class<?> destination) {
                 Intent intent = new Intent(BaseActivity.this, destination);
                 startActivity(intent);
             }
         };
     }
-
+    
     @NonNull
     protected MessageHelper getMessageHelper() {
         return new MessageHelper() {
@@ -73,5 +100,5 @@ public abstract class BaseActivity extends MvvmActivity {
             }
         };
     }
-
+    
 }

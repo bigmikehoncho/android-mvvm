@@ -21,8 +21,9 @@ import android.support.annotation.NonNull;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.BaseActivity;
 import com.manaschaudhari.android_mvvm.sample.R;
+import com.manaschaudhari.android_mvvm.sample.databinding.ActivityItemListBinding;
 
-public class ItemListActivity extends BaseActivity {
+public class ItemListActivity extends BaseActivity<ActivityItemListBinding> {
     @NonNull
     @Override
     protected ViewModel createViewModel() {

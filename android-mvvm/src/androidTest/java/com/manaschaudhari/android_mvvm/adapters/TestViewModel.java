@@ -18,6 +18,7 @@ package com.manaschaudhari.android_mvvm.adapters;
 
 import android.support.annotation.NonNull;
 
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 
 import java.util.ArrayList;
@@ -38,9 +39,9 @@ public class TestViewModel implements ViewModel {
         }
         return vms;
     }
-
+    
     @Override
-    public void onDestroy() {
-
+    public void setNavigator(INavigator navigator) {
+        
     }
 }
