@@ -27,12 +27,12 @@ public class CalculatorActivity extends BaseActivity<ActivityCalculatorBinding> 
     
     @NonNull
     @Override
-    protected ViewModel createViewModel() {
+    public ViewModel createViewModel() {
         return new CalculatorViewModel();
     }
     
     @Override
-    protected int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_calculator;
     }
 }

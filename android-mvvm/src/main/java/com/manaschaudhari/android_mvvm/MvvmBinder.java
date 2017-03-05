@@ -18,12 +18,8 @@ import com.manaschaudhari.android_mvvm.utils.Preconditions;
 
 public class MvvmBinder<Binding extends ViewDataBinding> {
     protected Binding binding;
-    private @LayoutRes int layoutId;
-    private ViewModel viewModel;
     
-    public MvvmBinder(@LayoutRes int layoutId, ViewModel viewModel) {
-        this.layoutId = layoutId;
-        this.viewModel = viewModel;
+    public MvvmBinder() {
     }
     
     /**
@@ -31,13 +27,15 @@ public class MvvmBinder<Binding extends ViewDataBinding> {
      * @param activity
      */
     public void onCreate(Activity activity){
-        binding = DataBindingUtil.setContentView(activity, layoutId);
-        getDefaultBinder().bind(binding, viewModel);
+        IVMBinder binder = (IVMBinder) activity;
+        binding = DataBindingUtil.setContentView(activity, binder.getLayoutId());
+        getDefaultBinder().bind(binding, binder.createViewModel());
     }
     
     public void onCreate(Context context){
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false);
-        getDefaultBinder().bind(binding, viewModel);
+        IVMBinder binder = (IVMBinder) context;
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), binder.getLayoutId(), null, false);
+        getDefaultBinder().bind(binding, binder.createViewModel());
     }
     
     /**

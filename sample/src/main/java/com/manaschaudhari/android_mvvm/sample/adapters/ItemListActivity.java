@@ -26,12 +26,12 @@ import com.manaschaudhari.android_mvvm.sample.databinding.ActivityItemListBindin
 public class ItemListActivity extends BaseActivity<ActivityItemListBinding> {
     @NonNull
     @Override
-    protected ViewModel createViewModel() {
+    public ViewModel createViewModel() {
         return new ItemListViewModel(getMessageHelper(), getNavigator());
     }
 
     @Override
-    protected int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_item_list;
     }
 }

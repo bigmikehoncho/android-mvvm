@@ -19,27 +19,27 @@ package com.manaschaudhari.android_mvvm.sample;
 import android.content.Intent;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.manaschaudhari.android_mvvm.IVMBinder;
 import com.manaschaudhari.android_mvvm.MvvmBinder;
-import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.adapters.ItemListActivity;
 import com.manaschaudhari.android_mvvm.sample.adapters.MessageHelper;
 import com.manaschaudhari.android_mvvm.sample.calculator_example.CalculatorActivity;
 import com.manaschaudhari.android_mvvm.sample.functional.DataLoadingActivity;
 import com.manaschaudhari.android_mvvm.sample.two_way_binding.SearchActivity;
 
-public abstract class BaseActivity<Binding extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseActivity<Binding extends ViewDataBinding> extends AppCompatActivity
+        implements IVMBinder {
     protected MvvmBinder<Binding> mvvmBinder;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mvvmBinder = new MvvmBinder<>(getLayoutId(), createViewModel());
+        mvvmBinder = new MvvmBinder<>();
         mvvmBinder.onCreate(this);
     }
     
@@ -49,12 +49,6 @@ public abstract class BaseActivity<Binding extends ViewDataBinding> extends AppC
         
         super.onDestroy();
     }
-    
-    @NonNull
-    protected abstract ViewModel createViewModel();
-    
-    @LayoutRes
-    protected abstract int getLayoutId();
     
     @NonNull
     protected Navigator getNavigator() {

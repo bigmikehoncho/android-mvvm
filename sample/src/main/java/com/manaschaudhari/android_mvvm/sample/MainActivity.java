@@ -25,12 +25,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @NonNull
     @Override
-    protected ViewModel createViewModel() {
+    public ViewModel createViewModel() {
         return new MainViewModel(getNavigator());
     }
 
     @Override
-    protected int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_main;
     }
 }

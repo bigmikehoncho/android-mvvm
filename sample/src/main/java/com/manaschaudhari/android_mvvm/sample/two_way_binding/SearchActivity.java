@@ -27,12 +27,12 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding> {
 
     @NonNull
     @Override
-    protected ViewModel createViewModel() {
+    public ViewModel createViewModel() {
         return new SearchViewModel(getMessageHelper(), getNavigator());
     }
 
     @Override
-    protected int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_search;
     }
 }
