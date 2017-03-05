@@ -34,13 +34,14 @@ import com.manaschaudhari.android_mvvm.sample.two_way_binding.SearchActivity;
 public abstract class BaseActivity<Binding extends ViewDataBinding> extends AppCompatActivity
         implements IVMBinder {
     protected MvvmBinder<Binding> mvvmBinder;
+    protected Binding binding;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         mvvmBinder = new MvvmBinder<>();
-        mvvmBinder.onCreate(this);
+        binding = mvvmBinder.onCreate(this);
     }
     
     @Override

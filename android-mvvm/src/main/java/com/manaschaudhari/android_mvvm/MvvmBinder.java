@@ -26,16 +26,18 @@ public class MvvmBinder<Binding extends ViewDataBinding> {
      * Call after super.onCreate of activity
      * @param activity
      */
-    public void onCreate(Activity activity){
+    public Binding onCreate(Activity activity){
         IVMBinder binder = (IVMBinder) activity;
         binding = DataBindingUtil.setContentView(activity, binder.getLayoutId());
         getDefaultBinder().bind(binding, binder.createViewModel());
+        return binding;
     }
     
-    public void onCreate(Context context){
+    public Binding onCreate(Context context){
         IVMBinder binder = (IVMBinder) context;
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), binder.getLayoutId(), null, false);
         getDefaultBinder().bind(binding, binder.createViewModel());
+        return binding;
     }
     
     /**
@@ -51,9 +53,5 @@ public class MvvmBinder<Binding extends ViewDataBinding> {
         ViewModelBinder defaultBinder = BindingUtils.getDefaultBinder();
         Preconditions.checkNotNull(defaultBinder, "Default Binder");
         return defaultBinder;
-    }
-    
-    public Binding getBinding(){
-        return binding;
     }
 }
