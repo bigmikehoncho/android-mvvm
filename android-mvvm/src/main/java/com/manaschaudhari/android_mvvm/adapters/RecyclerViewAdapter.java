@@ -35,16 +35,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.DataBindingViewHolder> {
-    private
-    @NonNull List<ViewModel> latestViewModels = new ArrayList<>();
-    private final
-    @NonNull ViewProvider viewProvider;
-    private final
-    @NonNull ViewModelBinder binder;
-    private final
-    @NonNull Observable<List<ViewModel>> source;
-    private final
-    @NonNull HashMap<RecyclerView.AdapterDataObserver, Disposable> disposables = new HashMap<>();
+    private @NonNull List<ViewModel> latestViewModels = new ArrayList<>();
+    private final @NonNull ViewProvider viewProvider;
+    private final @NonNull ViewModelBinder binder;
+    private final @NonNull Observable<List<ViewModel>> source;
+    private final @NonNull HashMap<RecyclerView.AdapterDataObserver, Disposable> subscriptions = new HashMap<>();
 
     public RecyclerViewAdapter(@NonNull Observable<List<ViewModel>> viewModels,
                                @NonNull ViewProvider viewProvider,

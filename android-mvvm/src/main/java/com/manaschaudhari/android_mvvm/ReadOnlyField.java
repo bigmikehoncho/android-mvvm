@@ -36,21 +36,17 @@ public class ReadOnlyField<T> extends ObservableField<T> {
 
     protected ReadOnlyField(@NonNull Observable<T> source) {
         super();
-        this.source = source
-                .doOnNext(new Consumer<T>() {
-                    @Override
-                    public void accept(T t) throws Exception {
-                        ReadOnlyField.super.set(t);
-                    }
-                })
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("ReadOnlyField", "onError in source observable", throwable);
-                    }
-                })
-                .onErrorResumeNext(Observable.<T>empty())
-                .share();
+        this.source = source.doOnNext(new Consumer<T>() {
+            @Override
+            public void accept(T t) throws Exception {
+                ReadOnlyField.super.set(t);
+            }
+        }).doOnError(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                Log.e("ReadOnlyField", "onError in source observable", throwable);
+            }
+        }).onErrorResumeNext(Observable.<T>empty()).share();
     }
 
     /**

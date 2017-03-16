@@ -48,7 +48,8 @@ public class RxUtils {
                     public void accept(Integer integer) throws Exception {
                         count.onNext(count.getValue() - 1);
                     }
-                }), count.map(new Function<Integer, Boolean>() {
+                }),
+                count.map(new Function<Integer, Boolean>() {
                     @Override
                     public Boolean apply(Integer integer) throws Exception {
                         return integer > 0;

@@ -25,19 +25,19 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class DataService {
-    public Single<String> loadData() {
-        return Single.create(new SingleOnSubscribe<String>() {
+    public Single<Result<String>> loadData() {
+        return Single.create(new SingleOnSubscribe<Result<String>>() {
             @Override
-            public void subscribe(SingleEmitter<String> emitter) throws Exception {
+            public void subscribe(SingleEmitter<Result<String>> e) throws Exception {
                 try {
                     Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
                 if (new Random().nextBoolean()) {
-                    emitter.onSuccess("Result from data service");
+                    e.onSuccess(Result.success("Result from data service"));
                 } else {
-                    emitter.onError(new Throwable("Fake error"));
+                    e.onSuccess(Result.<String>error(new Throwable("Fake error")));
                 }
             }
         }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());

@@ -31,27 +31,27 @@ public class FieldUtilsTest {
     public static final int INITIAL_VALUE = 4;
     private Observable<Integer> sut;
     private ObservableField<Integer> observableField;
-    private TestObserver<Integer> testSubscriber;
+    private TestObserver<Integer> testObserver;
 
     @Before
     public void setUp() throws Exception {
         observableField = new ObservableField<>(INITIAL_VALUE);
         sut = toObservable(observableField);
-        testSubscriber = new TestObserver<>();
+        testObserver = new TestObserver<>();
     }
 
     @Test
     public void emitsInitialValue() throws Exception {
-        sut.subscribe(testSubscriber);
+        sut.subscribe(testObserver);
 
-        testSubscriber.assertValues(INITIAL_VALUE);
+        testObserver.assertValues(INITIAL_VALUE);
     }
 
     @Test
     public void emitsUpdates() throws Exception {
-        sut.subscribe(testSubscriber);
+        sut.subscribe(testObserver);
         observableField.set(3);
 
-        testSubscriber.assertValues(INITIAL_VALUE, 3);
+        testObserver.assertValues(INITIAL_VALUE, 3);
     }
 }

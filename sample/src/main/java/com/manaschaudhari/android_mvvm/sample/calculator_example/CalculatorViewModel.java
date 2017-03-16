@@ -32,7 +32,7 @@ public class CalculatorViewModel implements ViewModel<INavigator> {
 
     public final ObservableField<String> number1 = new ObservableField<>("");
     public final ObservableField<String> number2 = new ObservableField<>("");
-    public final ObservableField<Calculator.Operation> operation = new ObservableField<>(null);
+    public final ObservableField<Calculator.Operation> operation = new ObservableField<>(Calculator.Operation.ADD);
 
     public final ReadOnlyField<String> result;
 
@@ -43,8 +43,7 @@ public class CalculatorViewModel implements ViewModel<INavigator> {
                 toObservable(number1), toObservable(number2), toObservable(operation),
                 new Function3<String, String, Calculator.Operation, String>() {
                     @Override
-                    public String apply(String s1, String s2, Calculator.Operation operation) {
-                        if (operation == null) { return ""; }
+                    public String apply(String s1, String s2, Calculator.Operation operation) throws Exception {
                         try {
                             int n1 = Integer.parseInt(s1);
                             int n2 = Integer.parseInt(s2);

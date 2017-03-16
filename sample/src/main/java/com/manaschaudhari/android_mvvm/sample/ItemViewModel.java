@@ -30,8 +30,7 @@ public class ItemViewModel implements ViewModel<INavigator> {
     @NonNull
     public final String name;
 
-    public final
-    @DrawableRes int imageRes;
+    public final @DrawableRes int imageRes;
 
     public boolean hasImage() {
         return imageRes != 0;
@@ -42,13 +41,13 @@ public class ItemViewModel implements ViewModel<INavigator> {
         this.name = item.name.toUpperCase();
         this.onClicked = new Action() {
             @Override
-            public void run() {
+            public void run() throws Exception {
                 messageHelper.show("Selected " + item.name);
             }
         };
         this.onDetailsClicked = new Action() {
             @Override
-            public void run() {
+            public void run() throws Exception {
                 navigator.openDetailsPage(item);
             }
         };

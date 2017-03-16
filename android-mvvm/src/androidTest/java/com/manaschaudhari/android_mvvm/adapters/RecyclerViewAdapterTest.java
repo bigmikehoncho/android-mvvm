@@ -118,13 +118,6 @@ public class RecyclerViewAdapterTest {
     }
 
     @Test
-    public void nullListIsTreatedAsEmpty() throws Exception {
-        viewModelsSource.onNext(null);
-
-        assertEquals(0, sut.getItemCount());
-    }
-
-    @Test
     public void errorIsHandled() throws Exception {
         viewModelsSource.onError(new Throwable());
 

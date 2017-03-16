@@ -34,28 +34,28 @@ public class MainViewModel implements ViewModel<INavigator> {
 
     public final Action onAdapterClick = new Action() {
         @Override
-        public void run() {
+        public void run() throws Exception {
             navigator.navigateToAdapterDemo();
         }
     };
 
     public final Action onFunctionalClick = new Action() {
         @Override
-        public void run() {
+        public void run() throws Exception {
             navigator.navigateToFunctionalDemo();
         }
     };
 
     public final Action onTwoWayBindingClick = new Action() {
         @Override
-        public void run() {
+        public void run() throws Exception {
             navigator.navigateToTwoWayBindingDemo();
         }
     };
 
     public final Action onCalculatorExampleClick = new Action() {
         @Override
-        public void run() {
+        public void run() throws Exception {
             navigator.navigateToCalculatorDemo();
         }
     };

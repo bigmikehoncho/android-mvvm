@@ -28,8 +28,8 @@ public class SubscriptionCounter<T> implements ObservableTransformer<T, T> {
     public int unsubscriptions;
 
     @Override
-    public ObservableSource<T> apply(Observable<T> tObservable) {
-        return tObservable.doOnSubscribe(new Consumer<Disposable>() {
+    public ObservableSource<T> apply(Observable<T> upstream) {
+        return upstream.doOnSubscribe(new Consumer<Disposable>() {
             @Override
             public void accept(Disposable disposable) throws Exception {
                 subscriptions++;

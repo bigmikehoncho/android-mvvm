@@ -31,8 +31,8 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import io.reactivex.subjects.BehaviorSubject;
 
-public class ItemListViewModel implements ViewModel<INavigator> {
-    public final Observable<List<ViewModel>> itemVms;
+public class ItemListViewModel implements ViewModel {
+    public final Observable<List<ItemViewModel>> itemVms;
 
     /**
      * Static non-terminating source will ensure that any non-closed subscription results in a memory leak
@@ -49,10 +49,10 @@ public class ItemListViewModel implements ViewModel<INavigator> {
     }
 
     public ItemListViewModel(@NonNull final MessageHelper messageHelper, @NonNull final Navigator navigator) {
-        this.itemVms = itemsSource.map(new Function<List<Item>, List<ViewModel>>() {
+        this.itemVms = itemsSource.map(new Function<List<Item>, List<ItemViewModel>>() {
             @Override
-            public List<ViewModel> apply(List<Item> items) throws Exception {
-                List<ViewModel> vms = new ArrayList<>();
+            public List<ItemViewModel> apply(List<Item> items) throws Exception {
+                List<ItemViewModel> vms = new ArrayList<>();
                 for (Item item : items) {
                     vms.add(new ItemViewModel(item, messageHelper, navigator));
                 }

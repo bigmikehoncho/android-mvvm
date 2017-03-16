@@ -114,13 +114,6 @@ public class ViewPagerAdapterTest {
     }
 
     @Test
-    public void nullListIsTreatedAsEmpty() throws Exception {
-        viewModelsSource.onNext(null);
-
-        assertEquals(0, sut.getCount());
-    }
-
-    @Test
     public void errorIsHandled() throws Exception {
         viewModelsSource.onError(new Throwable());
 
