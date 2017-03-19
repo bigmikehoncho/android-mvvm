@@ -39,7 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final @NonNull ViewProvider viewProvider;
     private final @NonNull ViewModelBinder binder;
     private final @NonNull Observable<List<ViewModel>> source;
-    private final @NonNull HashMap<RecyclerView.AdapterDataObserver, Disposable> subscriptions = new HashMap<>();
+    private final @NonNull HashMap<RecyclerView.AdapterDataObserver, Disposable> disposables = new HashMap<>();
 
     public RecyclerViewAdapter(@NonNull Observable<List<ViewModel>> viewModels,
                                @NonNull ViewProvider viewProvider,

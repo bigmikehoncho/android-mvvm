@@ -16,6 +16,7 @@
 
 package com.manaschaudhari.android_mvvm.rxjava;
 
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.adapters.ViewProvider;
 
@@ -30,8 +31,17 @@ public class BindingTestViewModel implements ViewModel {
     public Observable<List<EmptyViewModel>> observableSubclassMixedList;
 
     public ViewProvider viewProvider;
-
+    
+    @Override
+    public void setNavigator(INavigator navigator) {
+        
+    }
+    
     public static class EmptyViewModel implements ViewModel {
-
+    
+        @Override
+        public void setNavigator(INavigator navigator) {
+        
+        }
     }
 }

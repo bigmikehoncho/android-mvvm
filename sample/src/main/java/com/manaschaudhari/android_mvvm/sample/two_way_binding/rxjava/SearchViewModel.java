@@ -19,6 +19,7 @@ package com.manaschaudhari.android_mvvm.sample.two_way_binding.rxjava;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
+import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.rxjava.FieldUtils;
 import com.manaschaudhari.android_mvvm.sample.Item;
@@ -35,7 +36,7 @@ import rx.functions.Action0;
 import rx.functions.Func1;
 
 
-public class SearchViewModel implements ViewModel {
+public class SearchViewModel implements ViewModel<INavigator> {
     public final ObservableField<String> searchQuery = new ObservableField<>("");
     public final Observable<List<ViewModel>> results;
     public final Action0 onRandomSearch;
@@ -64,5 +65,10 @@ public class SearchViewModel implements ViewModel {
                 searchQuery.set(randomQuery);
             }
         };
+    }
+    
+    @Override
+    public void setNavigator(INavigator navigator) {
+        
     }
 }
