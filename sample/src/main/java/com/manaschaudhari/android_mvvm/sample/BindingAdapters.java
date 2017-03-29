@@ -32,14 +32,11 @@ import com.manaschaudhari.android_mvvm.adapters.ViewModelBinder;
 import com.manaschaudhari.android_mvvm.adapters.ViewProvider;
 import com.manaschaudhari.android_mvvm.utils.BindingUtils;
 
-import java.util.List;
-
-import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 
 @SuppressWarnings("unused")
 public class BindingAdapters {
-
+    
     @NonNull
     public static final ViewModelBinder defaultBinder = new ViewModelBinder() {
         @Override
@@ -47,14 +44,14 @@ public class BindingAdapters {
             viewDataBinding.setVariable(BR.vm, viewModel);
         }
     };
-
+    
     @BindingAdapter("android:visibility")
     public static void bindVisibility(@NonNull View view, @Nullable Boolean visible) {
         int visibility = (visible != null && visible) ? View.VISIBLE : View.GONE;
         view.setVisibility(visibility);
     }
-
-
+    
+    
     /**
      * Binding Adapter Wrapper for checking memory leak
      */
@@ -62,12 +59,12 @@ public class BindingAdapters {
     public static void bindRecyclerViewAdapter(RecyclerView recyclerView, ObservableList<ViewModel> items, ViewProvider viewProvider) {
         RecyclerView.Adapter previousAdapter = recyclerView.getAdapter();
         BindingUtils.bindAdapterWithDefaultBinder(recyclerView, items, viewProvider);
-
+        
         // Previous adapter should get deallocated
         if (previousAdapter != null)
             ExampleApplication.getRefWatcher(recyclerView.getContext()).watch(previousAdapter);
     }
-
+    
     /**
      * Binding Adapter Wrapper for checking memory leak
      */
@@ -75,12 +72,12 @@ public class BindingAdapters {
     public static void bindViewPagerAdapter(ViewPager viewPager, ObservableList<ViewModel> items, ViewProvider viewProvider) {
         PagerAdapter previousAdapter = viewPager.getAdapter();
         BindingUtils.bindAdapterWithDefaultBinder(viewPager, items, viewProvider);
-
+        
         // Previous adapter should get deallocated
         if (previousAdapter != null)
             ExampleApplication.getRefWatcher(viewPager.getContext()).watch(previousAdapter);
     }
-
+    
     @BindingConversion
     public static View.OnClickListener toOnClickListener(final Action listener) {
         if (listener != null) {

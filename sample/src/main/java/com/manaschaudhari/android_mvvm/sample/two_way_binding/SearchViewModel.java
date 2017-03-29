@@ -21,7 +21,6 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 
-import com.manaschaudhari.android_mvvm.FieldUtils;
 import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.Item;
@@ -33,15 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import io.reactivex.Observable;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Function;
 
 public class SearchViewModel implements ViewModel<INavigator> {
     public final ObservableField<String> searchQuery = new ObservableField<>("");
     public final ObservableList<ViewModel> results = new ObservableArrayList<>();
     public final Action onRandomSearch;
-
+    
     public SearchViewModel(@NonNull final MessageHelper messageHelper, @NonNull final Navigator navigator) {
         searchQuery.addOnPropertyChangedCallback(new android.databinding.Observable.OnPropertyChangedCallback() {
             @Override
@@ -59,7 +56,7 @@ public class SearchViewModel implements ViewModel<INavigator> {
                 results.addAll(listResults);
             }
         });
-
+        
         onRandomSearch = new Action() {
             @Override
             public void run() {
@@ -69,9 +66,9 @@ public class SearchViewModel implements ViewModel<INavigator> {
             }
         };
     }
-
+    
     @Override
     public void setNavigator(INavigator navigator) {
-
+        
     }
 }
