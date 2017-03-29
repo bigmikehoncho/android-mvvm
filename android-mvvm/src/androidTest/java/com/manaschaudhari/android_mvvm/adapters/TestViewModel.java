@@ -44,4 +44,9 @@ public class TestViewModel implements ViewModel {
     public void setNavigator(INavigator navigator) {
         
     }
+    
+    @Override
+    public void onDestroy() {
+        
+    }
 }

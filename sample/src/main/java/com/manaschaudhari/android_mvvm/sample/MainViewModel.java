@@ -23,7 +23,7 @@ import com.manaschaudhari.android_mvvm.ViewModel;
 
 import io.reactivex.functions.Action;
 
-public class MainViewModel implements ViewModel<INavigator> {
+public class MainViewModel extends BaseVM<INavigator> {
     @NonNull
     private final Navigator navigator;
 
@@ -59,9 +59,4 @@ public class MainViewModel implements ViewModel<INavigator> {
             navigator.navigateToCalculatorDemo();
         }
     };
-
-    @Override
-    public void setNavigator(INavigator navigator) {
-
-    }
 }

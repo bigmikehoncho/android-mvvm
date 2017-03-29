@@ -26,7 +26,7 @@ import com.manaschaudhari.android_mvvm.sample.adapters.MessageHelper;
 
 import io.reactivex.functions.Action;
 
-public class ItemViewModel implements ViewModel<INavigator> {
+public class ItemViewModel extends BaseVM<INavigator> {
     @NonNull
     public final String name;
 
@@ -59,9 +59,4 @@ public class ItemViewModel implements ViewModel<INavigator> {
 
     @Nullable
     public final Action onDetailsClicked;
-
-    @Override
-    public void setNavigator(INavigator navigator) {
-
-    }
 }

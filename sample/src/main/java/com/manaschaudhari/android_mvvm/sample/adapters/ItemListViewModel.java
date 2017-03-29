@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 
 import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
+import com.manaschaudhari.android_mvvm.sample.BaseVM;
 import com.manaschaudhari.android_mvvm.sample.Item;
 import com.manaschaudhari.android_mvvm.sample.ItemViewModel;
 import com.manaschaudhari.android_mvvm.sample.Navigator;
@@ -29,7 +30,7 @@ import com.manaschaudhari.android_mvvm.sample.Navigator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemListViewModel implements ViewModel<INavigator> {
+public class ItemListViewModel extends BaseVM<INavigator> {
     public final ObservableList<ViewModel> itemVms;
     
     /**
@@ -51,10 +52,5 @@ public class ItemListViewModel implements ViewModel<INavigator> {
         for (Item item : itemsSource) {
             itemVms.add(new ItemViewModel(item, messageHelper, navigator));
         }
-    }
-    
-    @Override
-    public void setNavigator(INavigator navigator) {
-        
     }
 }
