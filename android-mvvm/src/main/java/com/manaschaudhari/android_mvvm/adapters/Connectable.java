@@ -16,8 +16,12 @@
 
 package com.manaschaudhari.android_mvvm.adapters;
 
-import io.reactivex.disposables.Disposable;
+import android.databinding.ObservableList;
+
+import com.manaschaudhari.android_mvvm.ViewModel;
 
 public interface Connectable {
-    Disposable connect();
+    ObservableList.OnListChangedCallback<ObservableList<ViewModel>> connect();
+    
+    ObservableList<ViewModel> getSource();
 }

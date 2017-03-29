@@ -18,6 +18,7 @@ package com.manaschaudhari.android_mvvm.sample;
 
 import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
+import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -58,7 +59,7 @@ public class BindingAdapters {
      * Binding Adapter Wrapper for checking memory leak
      */
     @BindingAdapter({"items", "view_provider"})
-    public static void bindRecyclerViewAdapter(RecyclerView recyclerView, Observable<List<ViewModel>> items, ViewProvider viewProvider) {
+    public static void bindRecyclerViewAdapter(RecyclerView recyclerView, ObservableList<ViewModel> items, ViewProvider viewProvider) {
         RecyclerView.Adapter previousAdapter = recyclerView.getAdapter();
         BindingUtils.bindAdapterWithDefaultBinder(recyclerView, items, viewProvider);
 
@@ -71,7 +72,7 @@ public class BindingAdapters {
      * Binding Adapter Wrapper for checking memory leak
      */
     @BindingAdapter({"items", "view_provider"})
-    public static void bindViewPagerAdapter(ViewPager viewPager, Observable<List<ViewModel>> items, ViewProvider viewProvider) {
+    public static void bindViewPagerAdapter(ViewPager viewPager, ObservableList<ViewModel> items, ViewProvider viewProvider) {
         PagerAdapter previousAdapter = viewPager.getAdapter();
         BindingUtils.bindAdapterWithDefaultBinder(viewPager, items, viewProvider);
 

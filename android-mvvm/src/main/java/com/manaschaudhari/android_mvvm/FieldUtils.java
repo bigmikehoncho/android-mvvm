@@ -17,9 +17,13 @@
 package com.manaschaudhari.android_mvvm;
 
 import android.databinding.Observable.OnPropertyChangedCallback;
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;

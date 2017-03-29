@@ -17,61 +17,67 @@
 package com.manaschaudhari.android_mvvm.adapters;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.manaschaudhari.android_mvvm.ViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-
 public class ViewPagerAdapter extends PagerAdapter implements Connectable {
-
+    
     @NonNull
-    private List<ViewModel> latestViewModels = new ArrayList<>();
-
-    @NonNull
-    private final Observable<List<ViewModel>> source;
-
+    private final ObservableList<ViewModel> source;
+    
     @NonNull
     private final ViewProvider viewProvider;
-
+    
     @NonNull
     private final ViewModelBinder binder;
-
-    public ViewPagerAdapter(@NonNull Observable<List<ViewModel>> viewModels, @NonNull ViewProvider viewProvider, @NonNull ViewModelBinder binder) {
-        source = viewModels
-                .doOnNext(new Consumer<List<ViewModel>>() {
-                    @Override
-                    public void accept(List<ViewModel> viewModels) throws Exception {
-                        latestViewModels = (viewModels != null) ? viewModels : new ArrayList<ViewModel>();
-                        notifyDataSetChanged();
-                    }
-                })
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("ViewPagerAdapter", "Error in source observable", throwable);
-                    }
-                })
-                .onErrorResumeNext(Observable.<List<ViewModel>>empty())
-                .share();
+    
+    private final
+    @NonNull
+    ObservableList.OnListChangedCallback<ObservableList<ViewModel>> onListChangedCallback = new ObservableList.OnListChangedCallback<ObservableList<ViewModel>>() {
+        @Override
+        public void onChanged(ObservableList<ViewModel> viewModels) {
+            notifyDataSetChanged();
+        }
+        
+        @Override
+        public void onItemRangeChanged(ObservableList<ViewModel> viewModels, int start, int count) {
+            notifyDataSetChanged();
+        }
+        
+        @Override
+        public void onItemRangeInserted(ObservableList<ViewModel> viewModels, int start, int count) {
+            notifyDataSetChanged();
+        }
+        
+        @Override
+        public void onItemRangeMoved(ObservableList<ViewModel> viewModels, int from, int to, int count) {
+            notifyDataSetChanged();
+        }
+        
+        @Override
+        public void onItemRangeRemoved(ObservableList<ViewModel> viewModels, int start, int count) {
+            notifyDataSetChanged();
+        }
+    };
+    
+    public ViewPagerAdapter(@NonNull ObservableList<ViewModel> viewModels, @NonNull ViewProvider viewProvider, @NonNull ViewModelBinder binder) {
+        source = viewModels;
         this.viewProvider = viewProvider;
         this.binder = binder;
+        
+        source.addOnListChangedCallback(onListChangedCallback);
     }
-
+    
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ViewModel vm = latestViewModels.get(position);
+        ViewModel vm = source.get(position);
         int layoutId = viewProvider.getView(vm);
         ViewDataBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(container.getContext()),
@@ -82,7 +88,7 @@ public class ViewPagerAdapter extends PagerAdapter implements Connectable {
         container.addView(binding.getRoot());
         return binding;
     }
-
+    
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         ViewDataBinding binding = (ViewDataBinding) object;
@@ -90,24 +96,31 @@ public class ViewPagerAdapter extends PagerAdapter implements Connectable {
         binding.executePendingBindings();
         container.removeView(binding.getRoot());
     }
-
+    
     @Override
     public int getItemPosition(Object object) {
         return super.getItemPosition(object);
     }
-
+    
     @Override
     public int getCount() {
-        return latestViewModels.size();
+        return source.size();
     }
-
+    
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return ((ViewDataBinding)object).getRoot() == view;
+        return ((ViewDataBinding) object).getRoot() == view;
     }
-
+    
     @Override
-    public Disposable connect() {
-        return source.subscribe();
+    public ObservableList.OnListChangedCallback<ObservableList<ViewModel>> connect() {
+        source.addOnListChangedCallback(onListChangedCallback);
+        return onListChangedCallback;
+    }
+    
+    @NonNull
+    @Override
+    public ObservableList<ViewModel> getSource() {
+        return source;
     }
 }

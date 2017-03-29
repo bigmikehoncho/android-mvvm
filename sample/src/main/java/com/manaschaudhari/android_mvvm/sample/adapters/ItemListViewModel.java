@@ -16,6 +16,8 @@
 
 package com.manaschaudhari.android_mvvm.sample.adapters;
 
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 
 import com.manaschaudhari.android_mvvm.INavigator;
@@ -27,42 +29,32 @@ import com.manaschaudhari.android_mvvm.sample.Navigator;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.functions.Function;
-import io.reactivex.subjects.BehaviorSubject;
-
 public class ItemListViewModel implements ViewModel<INavigator> {
-    public final Observable<List<ViewModel>> itemVms;
-
+    public final ObservableList<ViewModel> itemVms;
+    
     /**
      * Static non-terminating source will ensure that any non-closed subscription results in a memory leak
      */
-    private static final Observable<List<Item>> itemsSource;
-
+    private static final List<Item> itemsSource;
+    
     static {
         List<Item> items = new ArrayList<>();
-
+        
         items.add(new Item("item 1"));
         items.add(new Item("item 2"));
         items.add(new Item("item 3"));
-        itemsSource = BehaviorSubject.createDefault(items);
+        itemsSource = new ArrayList<>(items);
     }
-
+    
     public ItemListViewModel(@NonNull final MessageHelper messageHelper, @NonNull final Navigator navigator) {
-        this.itemVms = itemsSource.map(new Function<List<Item>, List<ViewModel>>() {
-            @Override
-            public List<ViewModel> apply(List<Item> items) throws Exception {
-                List<ViewModel> vms = new ArrayList<>();
-                for (Item item : items) {
-                    vms.add(new ItemViewModel(item, messageHelper, navigator));
-                }
-                return vms;
-            }
-        });
+        this.itemVms = new ObservableArrayList<>();
+        for (Item item : itemsSource) {
+            itemVms.add(new ItemViewModel(item, messageHelper, navigator));
+        }
     }
-
+    
     @Override
     public void setNavigator(INavigator navigator) {
-
+        
     }
 }

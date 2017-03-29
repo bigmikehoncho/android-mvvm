@@ -17,105 +17,108 @@
 package com.manaschaudhari.android_mvvm.adapters;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.manaschaudhari.android_mvvm.ViewModel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.DataBindingViewHolder> {
-    private
-    @NonNull List<ViewModel> latestViewModels = new ArrayList<>();
     private final
-    @NonNull ViewProvider viewProvider;
+    @NonNull
+    ViewProvider viewProvider;
     private final
-    @NonNull ViewModelBinder binder;
+    @NonNull
+    ViewModelBinder binder;
     private final
-    @NonNull Observable<List<ViewModel>> source;
+    @NonNull
+    ObservableList<ViewModel> source;
     private final
-    @NonNull HashMap<RecyclerView.AdapterDataObserver, Disposable> disposables = new HashMap<>();
-
-    public RecyclerViewAdapter(@NonNull Observable<List<ViewModel>> viewModels,
+    @NonNull
+    ObservableList.OnListChangedCallback<ObservableList<ViewModel>> onListChangedCallback = new ObservableList.OnListChangedCallback<ObservableList<ViewModel>>() {
+        @Override
+        public void onChanged(ObservableList<ViewModel> viewModels) {
+            notifyDataSetChanged();
+        }
+        
+        @Override
+        public void onItemRangeChanged(ObservableList<ViewModel> viewModels, int start, int count) {
+            notifyItemRangeChanged(start, start + count);
+        }
+        
+        @Override
+        public void onItemRangeInserted(ObservableList<ViewModel> viewModels, int start, int count) {
+            notifyItemRangeInserted(start, start + count);
+        }
+        
+        @Override
+        public void onItemRangeMoved(ObservableList<ViewModel> viewModels, int from, int to, int count) {
+            notifyItemRangeRemoved(from, from + count);
+            notifyItemRangeInserted(to, to + count);
+        }
+        
+        @Override
+        public void onItemRangeRemoved(ObservableList<ViewModel> viewModels, int start, int count) {
+            notifyItemRangeRemoved(start, start + count);
+        }
+    };
+    
+    public RecyclerViewAdapter(@NonNull ObservableList<ViewModel> viewModels,
                                @NonNull ViewProvider viewProvider,
                                @NonNull ViewModelBinder viewModelBinder) {
         this.viewProvider = viewProvider;
         this.binder = viewModelBinder;
-        source = viewModels
-                .doOnNext(new Consumer<List<ViewModel>>() {
-                    @Override
-                    public void accept(List<ViewModel> viewModels) throws Exception {
-                        latestViewModels = viewModels != null ? viewModels : new ArrayList<ViewModel>();
-                        notifyDataSetChanged();
-                    }
-                })
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("RecyclerViewAdapter", "onError in source observable", throwable);
-                    }
-                })
-                .onErrorResumeNext(Observable.<List<ViewModel>>empty())
-                .share();
+        source = viewModels;
     }
-
+    
     @Override
     public int getItemViewType(int position) {
-        return viewProvider.getView(latestViewModels.get(position));
+        return viewProvider.getView(source.get(position));
     }
-
+    
     @Override
     public DataBindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), viewType, parent, false);
         return new DataBindingViewHolder(binding);
     }
-
+    
     @Override
     public void onBindViewHolder(DataBindingViewHolder holder, int position) {
-        binder.bind(holder.viewBinding, latestViewModels.get(position));
+        binder.bind(holder.viewBinding, source.get(position));
         holder.viewBinding.executePendingBindings();
     }
-
+    
     @Override
     public void onViewRecycled(DataBindingViewHolder holder) {
         binder.bind(holder.viewBinding, null);
         holder.viewBinding.executePendingBindings();
     }
-
+    
     @Override
     public int getItemCount() {
-        return latestViewModels.size();
+        return source.size();
     }
-
+    
     @Override
     public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
-        disposables.put(observer, source.subscribe());
+        source.addOnListChangedCallback(onListChangedCallback);
         super.registerAdapterDataObserver(observer);
     }
-
+    
     @Override
     public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
         super.unregisterAdapterDataObserver(observer);
-        Disposable disposable = disposables.remove(observer);
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
+        
+        source.removeOnListChangedCallback(onListChangedCallback);
     }
-
+    
     public static class DataBindingViewHolder extends RecyclerView.ViewHolder {
         @NonNull
         final ViewDataBinding viewBinding;
-
+        
         public DataBindingViewHolder(@NonNull ViewDataBinding viewBinding) {
             super(viewBinding.getRoot());
             this.viewBinding = viewBinding;
