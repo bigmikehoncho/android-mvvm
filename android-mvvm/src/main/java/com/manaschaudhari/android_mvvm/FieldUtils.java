@@ -28,7 +28,7 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
 
 public class FieldUtils {
-
+    
     @NonNull
     public static <T> Observable<T> toObservable(@NonNull final ObservableField<T> field) {
         return Observable.create(new ObservableOnSubscribe<T>() {
@@ -51,9 +51,9 @@ public class FieldUtils {
             }
         });
     }
-
+    
     @NonNull
-    public static Observable<Boolean> toObservable(@NonNull final ObservableBoolean field){
+    public static Observable<Boolean> toObservable(@NonNull final ObservableBoolean field) {
         return Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
             public void subscribe(final ObservableEmitter<Boolean> e) throws Exception {
@@ -74,7 +74,7 @@ public class FieldUtils {
             }
         });
     }
-
+    
     /**
      * A convenient wrapper for {@code ReadOnlyField#create(Observable)}
      *
@@ -84,7 +84,7 @@ public class FieldUtils {
     public static <T> ReadOnlyField<T> toField(@NonNull final Observable<T> observable) {
         return ReadOnlyField.create(observable);
     }
-
+    
     @NonNull
     public static ReadOnlyBoolean toBooleanField(@NonNull final Observable<Boolean> observable) {
         return ReadOnlyBoolean.create(observable);

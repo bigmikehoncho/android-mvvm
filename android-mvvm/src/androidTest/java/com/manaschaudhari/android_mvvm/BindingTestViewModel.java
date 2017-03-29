@@ -16,19 +16,19 @@
 
 package com.manaschaudhari.android_mvvm;
 
+import android.databinding.ObservableList;
+
 import com.manaschaudhari.android_mvvm.adapters.TestViewModel;
 import com.manaschaudhari.android_mvvm.adapters.ViewProvider;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-
 public class BindingTestViewModel implements ViewModel {
     public List<TestViewModel> subclassList;
     public List<ViewModel> mixedList;
-    public Observable<List<ViewModel>> observableMixedList;
-    public Observable<List<TestViewModel>> observableSubclassMixedList;
-
+    public ObservableList<ViewModel> observableMixedList;
+    public ObservableList<TestViewModel> observableSubclassMixedList;
+    
     public ViewProvider viewProvider;
     
     @Override

@@ -18,6 +18,8 @@ package com.manaschaudhari.android_mvvm.utils;
 
 import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,46 +45,47 @@ import io.reactivex.functions.Function;
 
 @SuppressWarnings("unused")
 public class BindingUtils {
-
+    
     @Nullable
     private static ViewModelBinder defaultBinder = null;
-
+    
     @Nullable
     public static ViewModelBinder getDefaultBinder() {
         return defaultBinder;
     }
-
+    
     public static void setDefaultBinder(@NonNull ViewModelBinder viewModelBinder) {
         defaultBinder = viewModelBinder;
     }
-
+    
     @BindingAdapter("adapter")
     public static void bindAdapter(@NonNull ViewPager viewPager, @Nullable PagerAdapter adapter) {
         PagerAdapter oldAdapter = viewPager.getAdapter();
-
+        
         // Disconnect previous adapter if its Connectable
         if (oldAdapter != null && oldAdapter instanceof Connectable) {
-            Disposable disposable = (Disposable) viewPager.getTag(R.integer.tag_subscription);
-            if (disposable != null && !disposable.isDisposed()) {
-                disposable.dispose();
+            ObservableList.OnListChangedCallback<ObservableList<ViewModel>> onListChangedCallback
+                    = (ObservableList.OnListChangedCallback<ObservableList<ViewModel>>) viewPager.getTag(R.integer.tag_subscription);
+            if (onListChangedCallback != null) {
+                ((Connectable) oldAdapter).getSource().removeOnListChangedCallback(onListChangedCallback);
             }
             viewPager.setTag(R.integer.tag_subscription, null);
         }
-
+        
         // Store connection (Subscription) if new adapter is Connectable
         if (adapter != null && adapter instanceof Connectable) {
             viewPager.setTag(R.integer.tag_subscription, ((Connectable) adapter).connect());
         }
         viewPager.setAdapter(adapter);
     }
-
+    
     @BindingAdapter("adapter")
     public static void bindAdapter(@NonNull RecyclerView recyclerView, @Nullable RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
     }
-
+    
     @BindingAdapter({"items", "view_provider"})
-    public static void bindAdapterWithDefaultBinder(@NonNull RecyclerView recyclerView, @Nullable Observable<List<ViewModel>> items, @Nullable ViewProvider viewProvider) {
+    public static void bindAdapterWithDefaultBinder(@NonNull RecyclerView recyclerView, @Nullable ObservableList<ViewModel> items, @Nullable ViewProvider viewProvider) {
         RecyclerViewAdapter adapter = null;
         if (items != null && viewProvider != null) {
             Preconditions.checkNotNull(defaultBinder, "Default Binder");
@@ -90,9 +93,9 @@ public class BindingUtils {
         }
         bindAdapter(recyclerView, adapter);
     }
-
+    
     @BindingAdapter({"items", "view_provider"})
-    public static void bindAdapterWithDefaultBinder(@NonNull ViewPager viewPager, @Nullable Observable<List<ViewModel>> items, @Nullable ViewProvider viewProvider) {
+    public static void bindAdapterWithDefaultBinder(@NonNull ViewPager viewPager, @Nullable ObservableList<ViewModel> items, @Nullable ViewProvider viewProvider) {
         ViewPagerAdapter adapter = null;
         if (items != null && viewProvider != null) {
             Preconditions.checkNotNull(defaultBinder, "Default Binder");
@@ -100,7 +103,7 @@ public class BindingUtils {
         }
         bindAdapter(viewPager, adapter);
     }
-
+    
     @BindingConversion
     @NonNull
     public static ViewProvider getViewProviderForStaticLayout(@LayoutRes final int layoutId) {
@@ -111,7 +114,7 @@ public class BindingUtils {
             }
         };
     }
-
+    
     @BindingConversion
     @Nullable
     public static <T extends ViewModel> Observable<List<ViewModel>> toGenericList(@Nullable Observable<List<T>> specificList) {
@@ -123,16 +126,21 @@ public class BindingUtils {
                     }
                 });
     }
-
+    
     @BindingConversion
     @Nullable
-    public static <T extends ViewModel> Observable<List<ViewModel>> toListObservable(@Nullable List<T> specificList) {
-        return specificList == null ? null :
-                Observable.just((List<ViewModel>)new ArrayList<ViewModel>(specificList));
+    public static <T extends ViewModel> ObservableList<ViewModel> toObservableList(@Nullable List<T> specificList) {
+        ObservableList<ViewModel> observableList = new ObservableArrayList<>();
+        if (specificList == null) {
+            return null;
+        } else {
+            observableList.addAll(specificList);
+            return observableList;
+        }
     }
-
+    
     // Extra Utilities
-
+    
     @BindingAdapter("layout_vertical")
     public static void bindLayoutManager(@NonNull RecyclerView recyclerView, boolean vertical) {
         int orientation = vertical ? RecyclerView.VERTICAL : RecyclerView.HORIZONTAL;

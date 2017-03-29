@@ -16,10 +16,11 @@
 
 package com.manaschaudhari.android_mvvm.sample.two_way_binding;
 
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
+import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 
-import com.manaschaudhari.android_mvvm.FieldUtils;
 import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.sample.Item;
@@ -31,31 +32,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import io.reactivex.Observable;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Function;
 
 public class SearchViewModel implements ViewModel<INavigator> {
     public final ObservableField<String> searchQuery = new ObservableField<>("");
-    public final Observable<List<ViewModel>> results;
+    public final ObservableList<ViewModel> results = new ObservableArrayList<>();
     public final Action onRandomSearch;
-
+    
     public SearchViewModel(@NonNull final MessageHelper messageHelper, @NonNull final Navigator navigator) {
-        results = FieldUtils.toObservable(searchQuery)
-                .map(new Function<String, List<ViewModel>>() {
-                    @Override
-                    public List<ViewModel> apply(String s) throws Exception {
-                        List<ViewModel> results = new ArrayList<>();
-                        if (s.length() > 0) {
-                            String[] words = s.split(" ");
-                            for (String word : words) {
-                                results.add(new ItemViewModel(new Item(word), messageHelper, navigator));
-                            }
-                        }
-                        return results;
+        searchQuery.addOnPropertyChangedCallback(new android.databinding.Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(android.databinding.Observable observable, int i) {
+                List<ViewModel> listResults = new ArrayList<>();
+                String s = searchQuery.get();
+                if (s.length() > 0) {
+                    String[] words = s.split(" ");
+                    for (String word : words) {
+                        listResults.add(new ItemViewModel(new Item(word), messageHelper, navigator));
                     }
-                });
-
+                }
+                
+                results.clear();
+                results.addAll(listResults);
+            }
+        });
+        
         onRandomSearch = new Action() {
             @Override
             public void run() {
@@ -65,9 +66,9 @@ public class SearchViewModel implements ViewModel<INavigator> {
             }
         };
     }
-
+    
     @Override
     public void setNavigator(INavigator navigator) {
-
+        
     }
 }
