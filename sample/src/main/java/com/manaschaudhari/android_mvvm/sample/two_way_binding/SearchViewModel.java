@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 
 import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ViewModel;
+import com.manaschaudhari.android_mvvm.sample.BaseVM;
 import com.manaschaudhari.android_mvvm.sample.Item;
 import com.manaschaudhari.android_mvvm.sample.ItemViewModel;
 import com.manaschaudhari.android_mvvm.sample.Navigator;
@@ -34,7 +35,7 @@ import java.util.UUID;
 
 import io.reactivex.functions.Action;
 
-public class SearchViewModel implements ViewModel<INavigator> {
+public class SearchViewModel extends BaseVM<INavigator> {
     public final ObservableField<String> searchQuery = new ObservableField<>("");
     public final ObservableList<ViewModel> results = new ObservableArrayList<>();
     public final Action onRandomSearch;
@@ -65,10 +66,5 @@ public class SearchViewModel implements ViewModel<INavigator> {
                 searchQuery.set(randomQuery);
             }
         };
-    }
-    
-    @Override
-    public void setNavigator(INavigator navigator) {
-        
     }
 }

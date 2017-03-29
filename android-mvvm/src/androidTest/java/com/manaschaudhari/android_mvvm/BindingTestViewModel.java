@@ -35,4 +35,9 @@ public class BindingTestViewModel implements ViewModel {
     public void setNavigator(INavigator navigator) {
         
     }
+    
+    @Override
+    public void onDestroy() {
+        
+    }
 }

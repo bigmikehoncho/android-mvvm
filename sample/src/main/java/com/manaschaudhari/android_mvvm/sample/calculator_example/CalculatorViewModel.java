@@ -21,6 +21,7 @@ import android.databinding.ObservableField;
 import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ReadOnlyField;
 import com.manaschaudhari.android_mvvm.ViewModel;
+import com.manaschaudhari.android_mvvm.sample.BaseVM;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function3;
@@ -28,7 +29,7 @@ import io.reactivex.functions.Function3;
 import static com.manaschaudhari.android_mvvm.FieldUtils.toField;
 import static com.manaschaudhari.android_mvvm.FieldUtils.toObservable;
 
-public class CalculatorViewModel implements ViewModel<INavigator> {
+public class CalculatorViewModel extends BaseVM<INavigator> {
 
     public final ObservableField<String> number1 = new ObservableField<>("");
     public final ObservableField<String> number2 = new ObservableField<>("");
@@ -58,10 +59,5 @@ public class CalculatorViewModel implements ViewModel<INavigator> {
                     }
                 });
         this.result = toField(result);
-    }
-
-    @Override
-    public void setNavigator(INavigator navigator) {
-
     }
 }

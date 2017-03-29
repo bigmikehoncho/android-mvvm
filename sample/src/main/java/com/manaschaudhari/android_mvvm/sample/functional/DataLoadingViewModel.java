@@ -22,6 +22,7 @@ import android.support.v4.util.Pair;
 import com.manaschaudhari.android_mvvm.INavigator;
 import com.manaschaudhari.android_mvvm.ReadOnlyField;
 import com.manaschaudhari.android_mvvm.ViewModel;
+import com.manaschaudhari.android_mvvm.sample.BaseVM;
 import com.manaschaudhari.android_mvvm.sample.utils.RxUtils;
 
 import io.reactivex.Observable;
@@ -31,7 +32,7 @@ import io.reactivex.functions.Function;
 
 import static com.manaschaudhari.android_mvvm.FieldUtils.toField;
 
-public class DataLoadingViewModel implements ViewModel<INavigator> {
+public class DataLoadingViewModel extends BaseVM<INavigator> {
 
     @NonNull
     public final ReadOnlyField<String> result;
@@ -62,10 +63,5 @@ public class DataLoadingViewModel implements ViewModel<INavigator> {
                 return !inProgress && result == null;
             }
         }));
-    }
-
-    @Override
-    public void setNavigator(INavigator navigator) {
-
     }
 }
