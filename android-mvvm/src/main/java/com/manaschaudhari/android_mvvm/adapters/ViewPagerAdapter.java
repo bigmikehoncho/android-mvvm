@@ -71,8 +71,6 @@ public class ViewPagerAdapter extends PagerAdapter implements Connectable {
         source = viewModels;
         this.viewProvider = viewProvider;
         this.binder = binder;
-        
-        source.addOnListChangedCallback(onListChangedCallback);
     }
     
     @Override
@@ -113,14 +111,13 @@ public class ViewPagerAdapter extends PagerAdapter implements Connectable {
     }
     
     @Override
-    public ObservableList.OnListChangedCallback<ObservableList<ViewModel>> connect() {
+    public void connect() {
         source.addOnListChangedCallback(onListChangedCallback);
-        return onListChangedCallback;
     }
     
     @NonNull
     @Override
-    public ObservableList<ViewModel> getSource() {
-        return source;
+    public void removeCallback() {
+        source.removeOnListChangedCallback(onListChangedCallback);
     }
 }

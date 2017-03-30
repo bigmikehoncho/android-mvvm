@@ -16,12 +16,8 @@
 
 package com.manaschaudhari.android_mvvm.adapters;
 
-import android.databinding.ObservableList;
-
-import com.manaschaudhari.android_mvvm.ViewModel;
-
 public interface Connectable {
-    ObservableList.OnListChangedCallback<ObservableList<ViewModel>> connect();
+    void connect();
     
-    ObservableList<ViewModel> getSource();
+    void removeCallback();
 }

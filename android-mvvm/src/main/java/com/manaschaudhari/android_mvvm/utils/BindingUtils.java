@@ -28,7 +28,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.manaschaudhari.android_mvvm.R;
 import com.manaschaudhari.android_mvvm.ViewModel;
 import com.manaschaudhari.android_mvvm.adapters.Connectable;
 import com.manaschaudhari.android_mvvm.adapters.RecyclerViewAdapter;
@@ -40,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 
 @SuppressWarnings("unused")
@@ -64,17 +62,12 @@ public class BindingUtils {
         
         // Disconnect previous adapter if its Connectable
         if (oldAdapter != null && oldAdapter instanceof Connectable) {
-            ObservableList.OnListChangedCallback<ObservableList<ViewModel>> onListChangedCallback
-                    = (ObservableList.OnListChangedCallback<ObservableList<ViewModel>>) viewPager.getTag(R.integer.tag_subscription);
-            if (onListChangedCallback != null) {
-                ((Connectable) oldAdapter).getSource().removeOnListChangedCallback(onListChangedCallback);
-            }
-            viewPager.setTag(R.integer.tag_subscription, null);
+            ((Connectable) oldAdapter).removeCallback();
         }
         
-        // Store connection (Subscription) if new adapter is Connectable
+        // Connect the new adapter
         if (adapter != null && adapter instanceof Connectable) {
-            viewPager.setTag(R.integer.tag_subscription, ((Connectable) adapter).connect());
+            ((Connectable) adapter).connect();
         }
         viewPager.setAdapter(adapter);
     }
