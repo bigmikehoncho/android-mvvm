@@ -46,23 +46,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         
         @Override
         public void onItemRangeChanged(ObservableList<ViewModel> viewModels, int start, int count) {
-            notifyItemRangeChanged(start, start + count);
+            notifyItemRangeChanged(start, count);
         }
         
         @Override
         public void onItemRangeInserted(ObservableList<ViewModel> viewModels, int start, int count) {
-            notifyItemRangeInserted(start, start + count);
+            notifyItemRangeInserted(start, count);
         }
         
         @Override
         public void onItemRangeMoved(ObservableList<ViewModel> viewModels, int from, int to, int count) {
-            notifyItemRangeRemoved(from, from + count);
-            notifyItemRangeInserted(to, to + count);
+            notifyItemRangeRemoved(from, count);
+            notifyItemRangeInserted(to, count);
         }
         
         @Override
         public void onItemRangeRemoved(ObservableList<ViewModel> viewModels, int start, int count) {
-            notifyItemRangeRemoved(start, start + count);
+            notifyItemRangeRemoved(start, count);
         }
     };
     

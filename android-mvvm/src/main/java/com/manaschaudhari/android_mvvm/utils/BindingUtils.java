@@ -123,10 +123,10 @@ public class BindingUtils {
     @BindingConversion
     @Nullable
     public static <T extends ViewModel> ObservableList<ViewModel> toObservableList(@Nullable List<T> specificList) {
-        ObservableList<ViewModel> observableList = new ObservableArrayList<>();
         if (specificList == null) {
             return null;
         } else {
+            ObservableList<ViewModel> observableList = new ObservableArrayList<>();
             observableList.addAll(specificList);
             return observableList;
         }
