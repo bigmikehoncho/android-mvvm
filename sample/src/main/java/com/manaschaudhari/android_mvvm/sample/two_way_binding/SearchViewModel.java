@@ -44,17 +44,14 @@ public class SearchViewModel extends BaseVM<INavigator> {
         searchQuery.addOnPropertyChangedCallback(new android.databinding.Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(android.databinding.Observable observable, int i) {
-                List<ViewModel> listResults = new ArrayList<>();
+                results.clear();
                 String s = searchQuery.get();
                 if (s.length() > 0) {
                     String[] words = s.split(" ");
                     for (String word : words) {
-                        listResults.add(new ItemViewModel(new Item(word), messageHelper, navigator));
+                        results.add(new ItemViewModel(new Item(word), messageHelper, navigator));
                     }
                 }
-                
-                results.clear();
-                results.addAll(listResults);
             }
         });
         
