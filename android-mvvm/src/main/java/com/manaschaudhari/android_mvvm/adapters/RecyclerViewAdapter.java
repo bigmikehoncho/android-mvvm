@@ -21,7 +21,6 @@ import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -42,32 +41,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     ObservableList.OnListChangedCallback<ObservableList<ViewModel>> onListChangedCallback = new ObservableList.OnListChangedCallback<ObservableList<ViewModel>>() {
         @Override
         public void onChanged(ObservableList<ViewModel> viewModels) {
-            Log.d("MIKE", "onChanged: ");
             notifyDataSetChanged();
         }
         
         @Override
         public void onItemRangeChanged(ObservableList<ViewModel> viewModels, int start, int count) {
-            Log.d("MIKE", "onItemRangeChanged: " + start + ", " + count);
             notifyItemRangeChanged(start, count);
         }
         
         @Override
         public void onItemRangeInserted(ObservableList<ViewModel> viewModels, int start, int count) {
-            Log.d("MIKE", "onItemRangeInserted: " + start + ", " + count);
             notifyItemRangeInserted(start, count);
         }
         
         @Override
         public void onItemRangeMoved(ObservableList<ViewModel> viewModels, int from, int to, int count) {
-            Log.d("MIKE", "onItemRangeMoved: " + from + ", " + to + ", " + count);
             notifyItemRangeRemoved(from, count);
             notifyItemRangeInserted(to, count);
         }
         
         @Override
         public void onItemRangeRemoved(ObservableList<ViewModel> viewModels, int start, int count) {
-            Log.d("MIKE", "onItemRangeRemoved: " + start + ", " + count);
             notifyItemRangeRemoved(start, count);
         }
     };
