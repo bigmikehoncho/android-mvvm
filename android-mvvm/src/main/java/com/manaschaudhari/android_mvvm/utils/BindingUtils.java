@@ -134,9 +134,9 @@ public class BindingUtils {
     
     // Extra Utilities
     
-    @BindingAdapter("layout_vertical")
-    public static void bindLayoutManager(@NonNull RecyclerView recyclerView, boolean vertical) {
+    @BindingAdapter(value = {"layout_vertical", "reverse_layout"}, requireAll = false)
+    public static void bindLayoutManager(@NonNull RecyclerView recyclerView, boolean vertical, boolean reverseLayout) {
         int orientation = vertical ? RecyclerView.VERTICAL : RecyclerView.HORIZONTAL;
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), orientation, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), orientation, reverseLayout));
     }
 }
