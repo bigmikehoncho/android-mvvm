@@ -87,7 +87,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     
     @Override
     public void onBindViewHolder(DataBindingViewHolder holder, int position) {
-        binder.bind(holder.viewBinding, source.get(position));
+        ViewModel vm = source.get(position);
+        holder.viewBinding.getRoot().setTag(vm);
+        binder.bind(holder.viewBinding, vm);
         holder.viewBinding.executePendingBindings();
     }
     

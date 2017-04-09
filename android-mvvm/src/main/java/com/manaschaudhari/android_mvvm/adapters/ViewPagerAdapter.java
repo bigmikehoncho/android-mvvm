@@ -27,6 +27,9 @@ import android.view.ViewGroup;
 
 import com.manaschaudhari.android_mvvm.ViewModel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ViewPagerAdapter extends PagerAdapter implements Connectable {
     
     @NonNull
@@ -83,6 +86,7 @@ public class ViewPagerAdapter extends PagerAdapter implements Connectable {
                 container,
                 false);
         binder.bind(binding, vm);
+        binding.getRoot().setTag(vm);
         container.addView(binding.getRoot());
         return binding;
     }
