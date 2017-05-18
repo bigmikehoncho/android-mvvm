@@ -6,11 +6,14 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
 import com.manaschaudhari.android_mvvm.adapters.ViewModelBinder;
 import com.manaschaudhari.android_mvvm.utils.BindingUtils;
 import com.manaschaudhari.android_mvvm.utils.Preconditions;
+
+import java.util.zip.Inflater;
 
 /**
  * Created by mike on 3/3/17.
@@ -33,9 +36,8 @@ public class MvvmBinder<Binding extends ViewDataBinding> {
         return binding;
     }
     
-    public Binding onCreate(Context context){
-        IVMBinder binder = (IVMBinder) context;
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), binder.getLayoutId(), null, false);
+    public Binding onCreate(IVMBinder binder, LayoutInflater inflater){
+        binding = DataBindingUtil.inflate(inflater, binder.getLayoutId(), null, false);
         getDefaultBinder().bind(binding, binder.createViewModel());
         return binding;
     }
