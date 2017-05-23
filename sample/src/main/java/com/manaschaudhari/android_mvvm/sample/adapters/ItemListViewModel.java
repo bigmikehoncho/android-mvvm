@@ -29,28 +29,47 @@ import com.manaschaudhari.android_mvvm.sample.Navigator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 public class ItemListViewModel extends BaseVM<INavigator> {
     public final ObservableList<ViewModel> itemVms;
-    
+
     /**
      * Static non-terminating source will ensure that any non-closed subscription results in a memory leak
      */
     private static final List<Item> itemsSource;
-    
+
     static {
         List<Item> items = new ArrayList<>();
-        
+
+        items.add(new Item("item 1"));
+        items.add(new Item("item 2"));
+        items.add(new Item("item 3"));
         items.add(new Item("item 1"));
         items.add(new Item("item 2"));
         items.add(new Item("item 3"));
         itemsSource = new ArrayList<>(items);
     }
-    
+
     public ItemListViewModel(@NonNull final MessageHelper messageHelper, @NonNull final Navigator navigator) {
         this.itemVms = new ObservableArrayList<>();
         for (Item item : itemsSource) {
             itemVms.add(new ItemViewModel(item, messageHelper, navigator));
         }
+
+        Observable.timer(2, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Long aLong) throws Exception {
+                        for (Item item : itemsSource) {
+                            itemVms.add(new ItemViewModel(item, messageHelper, navigator));
+                        }
+                    }
+                });
     }
 }
