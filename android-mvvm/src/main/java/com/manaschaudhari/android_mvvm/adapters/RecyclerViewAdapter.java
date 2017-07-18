@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 
 import com.manaschaudhari.android_mvvm.ViewModel;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.DataBindingViewHolder> {
+public class RecyclerViewAdapter<VM extends ViewModel> extends RecyclerView.Adapter<RecyclerViewAdapter.DataBindingViewHolder> {
     private final
     @NonNull
     ViewProvider viewProvider;
@@ -35,59 +35,59 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     ViewModelBinder binder;
     private final
     @NonNull
-    ObservableList<ViewModel> source;
+    ObservableList<VM> source;
     private final
     @NonNull
-    ObservableList.OnListChangedCallback<ObservableList<ViewModel>> onListChangedCallback = new ObservableList.OnListChangedCallback<ObservableList<ViewModel>>() {
+    ObservableList.OnListChangedCallback<ObservableList<VM>> onListChangedCallback = new ObservableList.OnListChangedCallback<ObservableList<VM>>() {
         @Override
-        public void onChanged(ObservableList<ViewModel> viewModels) {
+        public void onChanged(ObservableList<VM> viewModels) {
             notifyDataSetChanged();
         }
-        
+
         @Override
-        public void onItemRangeChanged(ObservableList<ViewModel> viewModels, int start, int count) {
+        public void onItemRangeChanged(ObservableList<VM> viewModels, int start, int count) {
             notifyItemRangeChanged(start, count);
         }
-        
+
         @Override
-        public void onItemRangeInserted(ObservableList<ViewModel> viewModels, int start, int count) {
+        public void onItemRangeInserted(ObservableList<VM> viewModels, int start, int count) {
             notifyItemRangeInserted(start, count);
         }
-        
+
         @Override
-        public void onItemRangeMoved(ObservableList<ViewModel> viewModels, int from, int to, int count) {
+        public void onItemRangeMoved(ObservableList<VM> viewModels, int from, int to, int count) {
             notifyItemRangeRemoved(from, count);
             notifyItemRangeInserted(to, count);
         }
-        
+
         @Override
-        public void onItemRangeRemoved(ObservableList<ViewModel> viewModels, int start, int count) {
+        public void onItemRangeRemoved(ObservableList<VM> viewModels, int start, int count) {
             notifyItemRangeRemoved(start, count);
         }
     };
-    
-    public RecyclerViewAdapter(@NonNull ObservableList<ViewModel> viewModels,
+
+    public RecyclerViewAdapter(@NonNull ObservableList<VM> viewModels,
                                @NonNull ViewProvider viewProvider,
                                @NonNull ViewModelBinder viewModelBinder) {
         this.viewProvider = viewProvider;
         this.binder = viewModelBinder;
         source = viewModels;
     }
-    
+
     @Override
     public int getItemViewType(int position) {
         return viewProvider.getView(source.get(position));
     }
-    
+
     @Override
     public DataBindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), viewType, parent, false);
         return new DataBindingViewHolder(binding);
     }
-    
+
     @Override
     public void onBindViewHolder(DataBindingViewHolder holder, int position) {
-        ViewModel vm = source.get(position);
+        VM vm = source.get(position);
         holder.viewBinding.getRoot().setTag(vm);
         binder.bind(holder.viewBinding, vm);
         holder.viewBinding.executePendingBindings();

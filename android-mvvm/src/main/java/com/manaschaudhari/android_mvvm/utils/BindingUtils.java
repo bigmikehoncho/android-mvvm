@@ -78,27 +78,27 @@ public class BindingUtils {
     }
 
     @BindingAdapter({"items", "view_provider"})
-    public static void bindAdapterWithDefaultBinder(@NonNull RecyclerView recyclerView, @Nullable ObservableList<ViewModel> items, @Nullable ViewProvider viewProvider) {
+    public static <VM extends ViewModel> void bindAdapterWithDefaultBinder(@NonNull RecyclerView recyclerView, @Nullable ObservableList<VM> items, @Nullable ViewProvider viewProvider) {
         RecyclerViewAdapter adapter = null;
         if (items != null && viewProvider != null) {
             if (recyclerView.getAdapter() != null) {
                 return;
             }
             Preconditions.checkNotNull(defaultBinder, "Default Binder");
-            adapter = new RecyclerViewAdapter(items, viewProvider, defaultBinder);
+            adapter = new RecyclerViewAdapter<>(items, viewProvider, defaultBinder);
         }
         bindAdapter(recyclerView, adapter);
     }
 
     @BindingAdapter({"items", "view_provider"})
-    public static void bindAdapterWithDefaultBinder(@NonNull ViewPager viewPager, @Nullable ObservableList<ViewModel> items, @Nullable ViewProvider viewProvider) {
+    public static <VM extends ViewModel> void bindAdapterWithDefaultBinder(@NonNull ViewPager viewPager, @Nullable ObservableList<VM> items, @Nullable ViewProvider viewProvider) {
         ViewPagerAdapter adapter = null;
         if (items != null && viewProvider != null) {
             if (viewPager.getAdapter() != null) {
                 return;
             }
             Preconditions.checkNotNull(defaultBinder, "Default Binder");
-            adapter = new ViewPagerAdapter(items, viewProvider, defaultBinder);
+            adapter = new ViewPagerAdapter<>(items, viewProvider, defaultBinder);
         }
         bindAdapter(viewPager, adapter);
     }
@@ -116,23 +116,23 @@ public class BindingUtils {
 
     @BindingConversion
     @Nullable
-    public static <T extends ViewModel> Observable<List<ViewModel>> toGenericList(@Nullable Observable<List<T>> specificList) {
+    public static <VM extends ViewModel> Observable<List<VM>> toGenericList(@Nullable Observable<List<VM>> specificList) {
         return specificList == null ? null : specificList
-                .map(new Function<List<T>, List<ViewModel>>() {
+                .map(new Function<List<VM>, List<VM>>() {
                     @Override
-                    public List<ViewModel> apply(List<T> ts) throws Exception {
-                        return new ArrayList<ViewModel>(ts);
+                    public List<VM> apply(List<VM> ts) throws Exception {
+                        return new ArrayList<VM>(ts);
                     }
                 });
     }
 
     @BindingConversion
     @Nullable
-    public static <T extends ViewModel> ObservableList<ViewModel> toObservableList(@Nullable List<T> specificList) {
+    public static <VM extends ViewModel> ObservableList<VM> toObservableList(@Nullable List<VM> specificList) {
         if (specificList == null) {
             return null;
         } else {
-            ObservableList<ViewModel> observableList = new ObservableArrayList<>();
+            ObservableList<VM> observableList = new ObservableArrayList<>();
             observableList.addAll(specificList);
             return observableList;
         }

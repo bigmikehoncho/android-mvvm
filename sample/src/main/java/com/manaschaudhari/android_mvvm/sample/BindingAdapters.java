@@ -56,20 +56,20 @@ public class BindingAdapters {
      * Binding Adapter Wrapper for checking memory leak
      */
     @BindingAdapter({"items", "view_provider"})
-    public static void bindRecyclerViewAdapter(RecyclerView recyclerView, ObservableList<ViewModel> items, ViewProvider viewProvider) {
+    public static <VM extends ViewModel> void bindRecyclerViewAdapter(RecyclerView recyclerView, ObservableList<VM> items, ViewProvider viewProvider) {
         RecyclerView.Adapter previousAdapter = recyclerView.getAdapter();
         BindingUtils.bindAdapterWithDefaultBinder(recyclerView, items, viewProvider);
-        
+
         // Previous adapter should get deallocated
         if (previousAdapter != null)
             ExampleApplication.getRefWatcher(recyclerView.getContext()).watch(previousAdapter);
     }
-    
+
     /**
      * Binding Adapter Wrapper for checking memory leak
      */
     @BindingAdapter({"items", "view_provider"})
-    public static void bindViewPagerAdapter(ViewPager viewPager, ObservableList<ViewModel> items, ViewProvider viewProvider) {
+    public static <VM extends ViewModel> void bindViewPagerAdapter(ViewPager viewPager, ObservableList<VM> items, ViewProvider viewProvider) {
         PagerAdapter previousAdapter = viewPager.getAdapter();
         BindingUtils.bindAdapterWithDefaultBinder(viewPager, items, viewProvider);
         

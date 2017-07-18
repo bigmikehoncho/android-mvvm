@@ -36,7 +36,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
 public class ItemListViewModel extends BaseVM<INavigator> {
-    public final ObservableList<ViewModel> itemVms;
+    public final ObservableList<ItemViewModel> itemVms;
 
     /**
      * Static non-terminating source will ensure that any non-closed subscription results in a memory leak

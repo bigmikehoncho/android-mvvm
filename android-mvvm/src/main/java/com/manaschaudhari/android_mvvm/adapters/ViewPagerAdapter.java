@@ -27,58 +27,55 @@ import android.view.ViewGroup;
 
 import com.manaschaudhari.android_mvvm.ViewModel;
 
-import java.util.HashMap;
-import java.util.Map;
+public class ViewPagerAdapter<VM extends ViewModel> extends PagerAdapter implements Connectable {
 
-public class ViewPagerAdapter extends PagerAdapter implements Connectable {
-    
     @NonNull
-    private final ObservableList<ViewModel> source;
-    
+    private final ObservableList<VM> source;
+
     @NonNull
     private final ViewProvider viewProvider;
-    
+
     @NonNull
     private final ViewModelBinder binder;
-    
+
     private final
     @NonNull
-    ObservableList.OnListChangedCallback<ObservableList<ViewModel>> onListChangedCallback = new ObservableList.OnListChangedCallback<ObservableList<ViewModel>>() {
+    ObservableList.OnListChangedCallback<ObservableList<VM>> onListChangedCallback = new ObservableList.OnListChangedCallback<ObservableList<VM>>() {
         @Override
-        public void onChanged(ObservableList<ViewModel> viewModels) {
+        public void onChanged(ObservableList<VM> viewModels) {
             notifyDataSetChanged();
         }
-        
+
         @Override
-        public void onItemRangeChanged(ObservableList<ViewModel> viewModels, int start, int count) {
+        public void onItemRangeChanged(ObservableList<VM> viewModels, int start, int count) {
             notifyDataSetChanged();
         }
-        
+
         @Override
-        public void onItemRangeInserted(ObservableList<ViewModel> viewModels, int start, int count) {
+        public void onItemRangeInserted(ObservableList<VM> viewModels, int start, int count) {
             notifyDataSetChanged();
         }
-        
+
         @Override
-        public void onItemRangeMoved(ObservableList<ViewModel> viewModels, int from, int to, int count) {
+        public void onItemRangeMoved(ObservableList<VM> viewModels, int from, int to, int count) {
             notifyDataSetChanged();
         }
-        
+
         @Override
-        public void onItemRangeRemoved(ObservableList<ViewModel> viewModels, int start, int count) {
+        public void onItemRangeRemoved(ObservableList<VM> viewModels, int start, int count) {
             notifyDataSetChanged();
         }
     };
-    
-    public ViewPagerAdapter(@NonNull ObservableList<ViewModel> viewModels, @NonNull ViewProvider viewProvider, @NonNull ViewModelBinder binder) {
+
+    public ViewPagerAdapter(@NonNull ObservableList<VM> viewModels, @NonNull ViewProvider viewProvider, @NonNull ViewModelBinder binder) {
         source = viewModels;
         this.viewProvider = viewProvider;
         this.binder = binder;
     }
-    
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ViewModel vm = source.get(position);
+        VM vm = source.get(position);
         int layoutId = viewProvider.getView(vm);
         ViewDataBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(container.getContext()),
@@ -90,7 +87,7 @@ public class ViewPagerAdapter extends PagerAdapter implements Connectable {
         container.addView(binding.getRoot());
         return binding;
     }
-    
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         ViewDataBinding binding = (ViewDataBinding) object;
@@ -98,27 +95,27 @@ public class ViewPagerAdapter extends PagerAdapter implements Connectable {
         binding.executePendingBindings();
         container.removeView(binding.getRoot());
     }
-    
+
     @Override
     public int getItemPosition(Object object) {
         return super.getItemPosition(object);
     }
-    
+
     @Override
     public int getCount() {
         return source.size();
     }
-    
+
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return ((ViewDataBinding) object).getRoot() == view;
     }
-    
+
     @Override
     public void connect() {
         source.addOnListChangedCallback(onListChangedCallback);
     }
-    
+
     @NonNull
     @Override
     public void removeCallback() {
