@@ -29,13 +29,16 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
 
 public class FieldUtils {
-    
+
     @NonNull
     public static <T> Observable<T> toObservable(@NonNull final ObservableField<T> field) {
         return Observable.create(new ObservableOnSubscribe<T>() {
             @Override
             public void subscribe(final ObservableEmitter<T> e) throws Exception {
-                e.onNext(field.get());
+                T value = field.get();
+                if (value != null) {
+                    e.onNext(value);
+                }
                 final OnPropertyChangedCallback callback = new OnPropertyChangedCallback() {
                     @Override
                     public void onPropertyChanged(android.databinding.Observable observable, int i) {
@@ -98,7 +101,7 @@ public class FieldUtils {
             }
         });
     }
-    
+
     /**
      * A convenient wrapper for {@code ReadOnlyField#create(Observable)}
      *
@@ -108,7 +111,7 @@ public class FieldUtils {
     public static <T> ReadOnlyField<T> toField(@NonNull final Observable<T> observable) {
         return ReadOnlyField.create(observable);
     }
-    
+
     @NonNull
     public static ReadOnlyBoolean toBooleanField(@NonNull final Observable<Boolean> observable) {
         return ReadOnlyBoolean.create(observable);

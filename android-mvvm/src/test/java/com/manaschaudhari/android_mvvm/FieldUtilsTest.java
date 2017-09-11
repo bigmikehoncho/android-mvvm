@@ -30,14 +30,24 @@ public class FieldUtilsTest {
 
     public static final int INITIAL_VALUE = 4;
     private Observable<Integer> sut;
+    private ObservableField<Integer> observableFieldNull;
     private ObservableField<Integer> observableField;
     private TestObserver<Integer> testSubscriber;
 
     @Before
     public void setUp() throws Exception {
+        observableFieldNull = new ObservableField<>();
         observableField = new ObservableField<>(INITIAL_VALUE);
         sut = toObservable(observableField);
         testSubscriber = new TestObserver<>();
+    }
+
+    @Test
+    public void emitsNoValue() {
+        TestObserver<Integer> testNullInit = new TestObserver<>();
+        toObservable(observableFieldNull).subscribe(testNullInit);
+
+        testNullInit.assertNoErrors();
     }
 
     @Test
