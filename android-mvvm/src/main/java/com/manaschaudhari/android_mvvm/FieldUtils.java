@@ -116,4 +116,9 @@ public class FieldUtils {
     public static ReadOnlyBoolean toBooleanField(@NonNull final Observable<Boolean> observable) {
         return ReadOnlyBoolean.create(observable);
     }
+
+    @NonNull
+    public static ReadOnlyInt toIntField(@NonNull final Observable<Integer> observable) {
+        return ReadOnlyInt.create(observable);
+    }
 }
